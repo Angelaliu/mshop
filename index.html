@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>mshop</title>
+    <link href="css/base.css" rel="stylesheet">
+    <link href="css/iscroll.css" rel="stylesheet">
+    
+    <!--必须引入jquery类库，selectivizr,才能起作用-->
+    <!--[if lte IE 8]>
+      <script src="js/selectivizr.js"></script>
+    <![endif]-->
+    <!--[if lt IE 9]>
+      <script type="text/javascript" src="js/html5shiv.js"></script>
+	<![endif]-->
+    
+    <script src="js/respond.min.js"></script>
+<script type="application/javascript" src="./js/iscroll.js"></script>    
+<script type="text/javascript">
+
+var myScroll,
+pullDownEl, pullDownOffset,
+pullUpEl, pullUpOffset,
+generatedCount = 0;
+
+function pullDownAction () {
+setTimeout(function () {    // <-- Simulate network congestion, remove setTimeout from production!
+	var el, li, i;
+	el = document.getElementById('list-item');
+
+	for (i=0; i<3; i++) {
+		li = document.createElement('li');
+		li.setAttribute('class','item');
+		
+		li.innerText = 'Generated row ' + (++generatedCount);
+		el.insertBefore(li, el.childNodes[0]);
+	}
+	
+	myScroll.refresh();        // Remember to refresh when contents are loaded (ie: on ajax completion)
+}, 1000);    // <-- Simulate network congestion, remove setTimeout from production!
+}
+
+function pullUpAction () {
+setTimeout(function () {    // <-- Simulate network congestion, remove setTimeout from production!
+	var el, li, i;
+	el = document.getElementById('list-item');
+
+	for (i=0; i<3; i++) {
+		li = document.createElement('li');
+		li.setAttribute('class','item');
+		li.innerText = 'Generated row ' + (++generatedCount);
+		el.appendChild(li, el.childNodes[0]);
+	}
+	
+	myScroll.refresh();        // Remember to refresh when contents are loaded (ie: on ajax completion)
+}, 1000);    // <-- Simulate network congestion, remove setTimeout from production!
+}
+
+function loaded() {
+pullDownEl = document.getElementById('pullDown');
+pullDownOffset = pullDownEl.offsetHeight;
+pullUpEl = document.getElementById('pullUp');    
+pullUpOffset = pullUpEl.offsetHeight;
+
+myScroll = new iScroll('main', {
+	useTransition: true,
+	topOffset: pullDownOffset,
+	onRefresh: function () {
+		if (pullDownEl.className.match('loading')) {
+			pullDownEl.className = '';
+			pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Pull down to refresh...';
+		} else if (pullUpEl.className.match('loading')) {
+			pullUpEl.className = '';
+			pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Pull up to load more...';
+		}
+	},
+	onScrollMove: function () {
+		if (this.y > 5 && !pullDownEl.className.match('flip')) {
+			pullDownEl.className = 'flip';
+			pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Release to refresh...';
+			this.minScrollY = 0;
+		} else if (this.y < 5 && pullDownEl.className.match('flip')) {
+			pullDownEl.className = '';
+			pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Pull down to refresh...';
+			this.minScrollY = -pullDownOffset;
+		} else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+			pullUpEl.className = 'flip';
+			pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Release to refresh...';
+			this.maxScrollY = this.maxScrollY;
+		} else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+			pullUpEl.className = '';
+			pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Pull up to load more...';
+			this.maxScrollY = pullUpOffset;
+		}
+	},
+	onScrollEnd: function () {
+		if (pullDownEl.className.match('flip')) {
+			pullDownEl.className = 'loading';
+			pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Loading...';                
+			pullDownAction();    // Execute custom function (ajax call?)
+		} else if (pullUpEl.className.match('flip')) {
+			pullUpEl.className = 'loading';
+			pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Loading...';                
+			pullUpAction();    // Execute custom function (ajax call?)
+		}
+	}
+});
+
+/*setTimeout(function () { document.getElementById('main').style.left = '0'; }, 800);*/
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+</script>
+    
+    
+    
+  </head>
+  <body>
+    <div style="display:none;">
+      <svg>
+<symbol id="cart" viewBox="-76.382 -76.238 152.764 152.476">
+<path d="M-27.284-54.456c-6.017,0-10.891-4.874-10.891-10.891s4.874-10.891,10.891-10.891 s10.891,4.874,10.891,10.891S-21.267-54.456-27.284-54.456L-27.284-54.456z M48.954-54.456c-6.017,0-10.891-4.874-10.891-10.891 s4.874-10.891,10.891-10.891s10.891,4.874,10.891,10.891S54.971-54.456,48.954-54.456L48.954-54.456z M59.757-49.01h-88.452 c-7.848,0-14.747,6.208-15.706,14.131l-9.235,65.02l-5.255,30.387c-0.327,2.651-2.745,4.819-5.108,4.819h-6.937 c-3.006,0-5.446,2.44-5.446,5.446c0,3.005,2.44,5.445,5.446,5.445h6.937c7.946,0,14.921-6.208,15.885-14.131l5.244-30.271 l9.275-65.298c0.304-2.527,2.591-4.656,4.901-4.656h88.452c3.011,0,5.446-2.434,5.446-5.445 C65.203-46.576,62.769-49.01,59.757-49.01z M-21.888-27.228c-2.826,0-5.217,2.179-5.424,5.048c-0.223,3,2.032,5.609,5.026,5.827 l73.875,5.446c2.711,0.016,4.999,2.146,5.298,4.569l8.577,49.075c0.218,1.83-0.289,3.834-1.382,5.075 c-0.704,0.795-1.586,1.198-2.615,1.198h-94.284c-3.006,0-5.446,2.44-5.446,5.445c0,3.006,2.44,5.446,5.446,5.446h94.284 c4.161,0,7.983-1.727,10.767-4.869c3.18-3.588,4.639-8.647,4.002-13.892L67.653-7.939c-0.926-7.635-7.82-13.843-15.667-13.843 l-73.471-5.429C-21.621-27.222-21.757-27.228-21.888-27.228z" transform="matrix(1 0 0 -1 0 0)"/>
+</symbol>
+<symbol id="home" viewBox="-78.108 -70.962 156.216 141.924">
+<path d="M76.142,14.951L10.14,67.561c-5.682,4.538-14.597,4.533-20.273,0L-76.13,14.951 c-2.254-1.803-2.639-5.105-0.858-7.38c1.781-2.274,4.984-2.663,7.238-0.868l2.058,1.702v-63.612 c0-9.018,9.421-15.756,17.705-15.756H54.165c8.185,0,13.539,6.333,13.539,15.756V8.159l1.903-1.456 c0.957-0.76,2.133-1.127,3.264-1.127c1.535,0,3.077,0.683,4.104,1.995C78.76,9.846,78.401,13.148,76.142,14.951z M-5.203-60.459 v29.119c0,1.449,2.604,2.174,5.209,2.174c2.604,0,5.207-0.725,5.207-2.174v-29.119H-5.203z M57.289-55.207 c0-3.482-0.952-5.252-3.124-5.252H15.731c0,0.08-0.103,0.143-0.103,0.221v28.898c0,6.107-4.886,12.683-15.623,12.683 c-10.738,0-15.623-6.576-15.623-12.683v-28.898c0-0.078,0.142-0.141,0.142-0.221h-34.512c-3.265,0-7.291,2.847-7.291,5.252v71.916 l53.53,42.612c1.92,1.532,5.389,1.532,7.316,0l53.722-42.858V-55.207z" transform="matrix(1 0 0 -1 0 0)"/>
+</symbol>
+<symbol id="me" viewBox="-77.333 -77.333 154.665 154.665">
+<path d="M0,77.333c-42.644,0-77.333-34.689-77.333-77.333S-42.643-77.333,0-77.333 c42.644,0,77.332,34.689,77.332,77.333S42.645,77.333,0,77.333z M-38.456-53.884c0.547,0.021,1.094,0.038,1.635,0.231 c10.837,3.839,21.542,6.601,27.276,7.043c2.879,0.221,5.099,2.624,5.099,5.507v10.197c0,1.624-0.712,3.165-1.95,4.214 c-9.163,7.783-12.428,24.989-12.428,38.506c0,15.538,7.275,23.415,21.625,23.415c13.672,0,20.316-7.656,20.316-23.415 c0-15.351-6.783-32.773-15.438-39.666c-1.315-1.044-2.083-2.635-2.083-4.32v-9.495c0-2.801,2.094-5.148,4.872-5.485 c6.419-0.768,17.45-4.479,25.63-7.706c0.271-0.104,0.552-0.093,0.834-0.155C26.371-62.126,13.661-66.285,0-66.285 C-14.344-66.285-27.602-61.656-38.456-53.884z M43.604-49.802c0.04,2.237-1.258,4.358-3.462,5.231 c-3.59,1.414-14.528,5.579-23.499,7.539v2.348C28.155-23.841,34.165-3.53,34.165,11.815c0,21.901-11.428,34.463-31.364,34.463 c-20.46,0-32.673-12.882-32.673-34.463c0-7.413,1.077-31.751,14.378-45.124v-2.961c-7.717-1.364-17.51-4.32-25.017-6.977 c-2.59-0.917-3.965-3.574-3.48-6.203C-57.629-37.296-66.285-19.665-66.285,0c0,36.551,29.735,66.285,66.286,66.285 c36.551,0,66.286-29.734,66.286-66.285C66.286-19.852,57.469-37.645,43.604-49.802z" transform="matrix(1 0 0 -1 0 0)"/>
+</symbol>
+<symbol id="similar" viewBox="-67.209 -72.052 134.419 144.104">
+<path d="M-37.259,13.221c-16.222,0-29.416,13.194-29.416,29.415c0,16.222,13.194,29.416,29.416,29.416 c16.221,0,29.416-13.194,29.416-29.416C-7.843,26.416-21.038,13.221-37.259,13.221z M-37.259,61.355 c-10.323,0-18.719-8.397-18.719-18.719c0-10.322,8.396-18.718,18.719-18.718c10.322,0,18.719,8.396,18.719,18.718 C-18.54,52.958-26.937,61.355-37.259,61.355z M31.686,13.221c-16.216,0-29.416,13.194-29.416,29.415 c0,16.222,13.199,29.416,29.416,29.416c16.216,0,29.415-13.194,29.415-29.416C61.101,26.416,47.901,13.221,31.686,13.221z M31.686,61.355c-10.322,0-18.719-8.397-18.719-18.719c0-10.322,8.397-18.718,18.719-18.718s18.719,8.396,18.719,18.718 C50.405,52.958,42.002,61.355,31.686,61.355z M-37.794-62.041c-16.221,0-29.415,13.2-29.415,29.415 c0,16.217,13.194,29.416,29.415,29.416S-8.379-16.409-8.379-32.625C-8.379-48.841-21.573-62.041-37.794-62.041z M-37.794-13.906 c-10.322,0-18.718-8.396-18.718-18.719c0-10.321,8.396-18.718,18.718-18.718c10.322,0,18.719,8.397,18.719,18.718 C-19.075-22.302-27.472-13.906-37.794-13.906z M65.722-63.002L54.715-51.542c4.434,5.242,6.916,11.879,6.916,18.916 c0,16.217-13.2,29.416-29.416,29.416S2.799-16.409,2.799-32.625c0-14.788,11.307-27.33,26.297-29.19 c0.225-0.033,0.445-0.043,0.664-0.043c2.663,0,4.969,1.984,5.301,4.691c0.363,2.93-1.717,5.605-4.649,5.963 c-9.482,1.176-16.917,9.339-16.917,18.579c0,10.324,8.397,18.719,18.719,18.719s18.719-8.396,18.719-18.719 c0-5.797-2.615-11.177-7.183-14.75c-2.326-1.818-2.739-5.183-0.915-7.504c0.524-0.668,1.193-1.133,1.905-1.475 c0.166-0.241,0.256-0.514,0.464-0.732l12.793-13.317c1.053-1.097,2.456-1.648,3.862-1.648c1.332,0,2.669,0.498,3.701,1.488 C67.696-68.517,67.766-65.131,65.722-63.002z" transform="matrix(1 0 0 -1 0 0)"/>
+</symbol>
+</svg>
+    </div>
+    <div class="wrapper">
+      <div class="container fl">
+        <header>
+          <h2> mshop的标题</h2>
+        </header>
+        <div class="main fl" id="main" style="overflow: hidden;">
+          <div id="scroller">
+            <div id="pullDown" class="">
+              <span class="pullDownIcon"></span>
+              <span class="pullDownLabel">Pull down to refresh...</span>
+            </div>
+            <ul class="fl" id="list-item">
+              <li class="item">
+                <a class="btn-sp" href="#" target="_blank" data-name="">
+                  <img class="item-icon" alt="商品替代文本" >
+                  <section>
+                    <h2 class="item-name">菠萝单果</h2>
+                    
+                      <span class="item-price">$28.90</span>
+                      <span class="item-price-old">$36.00</span>
+                    
+                  </section>
+                  <span class="btn-cart">加入购物车</span>
+                </a>
+              </li>
+              <li class="item">
+                <a class="btn-sp" href="#" target="_blank" data-name="">
+                  <img class="item-icon" alt="商品替代文本" >
+                  <section>
+                    <h2 class="item-name">菠萝单果</h2>
+                    
+                      <span class="item-price">$28.90</span>
+                      <span class="item-price-old">$36.00</span>
+                    
+                  </section>
+                  <span class="btn-cart">加入购物车</span>
+                </a>
+              </li>
+              <li class="item">
+                <a class="btn-sp" href="#" target="_blank" data-name="">
+                  <img class="item-icon" alt="商品替代文本" >
+                  <section>
+                    <h2 class="item-name">菠萝单果</h2>
+                    
+                      <span class="item-price">$28.90</span>
+                      <span class="item-price-old">$36.00</span>
+                    
+                  </section>
+                  <span class="btn-cart">加入购物车</span>
+                </a>
+              </li>
+              <li class="item">
+                <a class="btn-sp" href="#" target="_blank" data-name="">
+                  <img class="item-icon" alt="商品替代文本" >
+                  <section>
+                    <h2 class="item-name">菠萝单果</h2>
+                    
+                      <span class="item-price">$28.90</span>
+                      <span class="item-price-old">$36.00</span>
+                    
+                  </section>
+                  <span class="btn-cart">加入购物车</span>
+                </a>
+              </li>
+              <li class="item">
+                <a class="btn-sp" href="#" target="_blank" data-name="">
+                  <img class="item-icon" alt="商品替代文本" >
+                  <section>
+                    <h2 class="item-name">菠萝单果</h2>
+                    
+                      <span class="item-price">$28.90</span>
+                      <span class="item-price-old">$36.00</span>
+                    
+                  </section>
+                  <span class="btn-cart">加入购物车</span>
+                </a>
+              </li>
+              <li class="item">
+                <a class="btn-sp" href="#" target="_blank" data-name="">
+                  <img class="item-icon" alt="商品替代文本" >
+                  <section>
+                    <h2 class="item-name">菠萝单果</h2>
+                    
+                      <span class="item-price">$28.90</span>
+                      <span class="item-price-old">$36.00</span>
+                    
+                  </section>
+                  <span class="btn-cart">加入购物车</span>
+                </a>
+              </li>
+            </ul>
+            <div id="pullUp">
+			  <span class="pullUpIcon"></span><span class="pullUpLabel">Pull up to refresh...</span>
+		    </div>
+          </div>
+        </div>
+        <footer class="fix clear">
+          <nav>
+            <ul>
+              <li class="nav-list">
+                <a href="#" data-name="home">
+                  <svg class="nav_icon_svg">
+					<desc>
+					  <i class="nav_icon_home">5</i>
+					</desc>
+				    <use xlink:href="#home"></use>
+                  </svg>
+                  <span>首页</span>
+                </a>
+              </li>
+              <li class="nav-list">
+                <a href="#" data-name="category">
+                  <svg class="nav_icon_svg">
+					<desc>
+					  <i class="nav_icon_similar">5</i>
+					</desc>
+				    <use xlink:href="#similar"></use>
+                  </svg>
+                  <span>分类</span>
+                </a>
+              </li>
+              <li class="nav-list">
+                <a href="#" data-name="shop">
+                  <svg class="nav_icon_svg">
+					<desc>
+					  <i class="nav_icon_cart">5</i>
+					</desc>
+				    <use xlink:href="#cart"></use>
+                  </svg>
+                  <span>购物车</span>
+                </a>
+              </li>
+              <li class="nav-list">
+                <a href="#" data-name="me">
+                  <svg class="nav_icon_svg">
+					<desc>
+					  <i class="nav_icon_me">5</i>
+					</desc>
+				    <use xlink:href="#me"></use>
+                  </svg>
+                  <span>个人信息</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </footer>
+      </div>
+    </div>
+    
+    
+  </body>
+</html>

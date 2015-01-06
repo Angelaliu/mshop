@@ -1,0 +1,307 @@
+@charset "utf-8";
+/* init css */
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section ,a , img, i { 
+  display: block; 
+}
+*,html { 
+  font-size: 62.5%; /*10 ÷ 16 × 100% = 62.5%,用rem, 1rem=10px*/ 
+  -webkit-text-size-adjust: 100%; 
+  -ms-text-size-adjust: 100%; 
+}
+body {
+  font-size: 1.4rem;/*1.4 × 10px = 14px */
+}
+h1 { 
+  font-size: 2.4rem;/*2.4 × 10px = 24px*/
+}
+h2 {
+  font-size: 2rem;
+}
+body, ul, ol, dl, h2 ,p { 
+  margin: 0; 
+  padding: 0;
+}
+body, button, input, select, textarea { 
+  font-family: Tahoma,Helvetica,arial,
+  			   "Microsoft YaHei", "微软雅黑", 
+               STXihei, "华文细黑",
+			   serif; 
+  color: #222; 
+}
+ul, ol, dl {
+  list-style: none;
+}
+a { 
+  color: #404040; 
+}
+a:visited { 
+  color: #404040; 
+}
+a:hover { 
+  color: #06e; 
+  cursor: pointer;
+}
+a:focus { 
+  outline: 0; 
+}
+/* 改善在所有浏览器中获取焦点和悬停时的可读性  */
+a:link,
+a:visited,
+a:hover, 
+a:active { 
+  outline: 0; 
+  text-decoration: none;
+}
+img {
+  border: 0 none;
+}
+img, i, object, embed, video {
+	max-width: 100%;
+}
+/* IE 6 不支持最大宽度，因此默认为 100% 宽度 */
+.ie6 img {
+	width:100%;
+}
+.clear {
+	clear:both;
+}
+.fl {
+	float: left;
+}
+header, .main, .fix, img, i {
+	box-sizing: border-box;
+}
+
+/** init end ***/
+/*  移动设备布局480下 */
+
+.wrapper {
+	width: 100%;
+	margin: 0 auto;
+	background-color: pink;
+	height: 100%;
+}
+.container {
+	width: 100%;
+	background-color: #FCC;
+	height: 100%;
+}
+.container header {
+	border-bottom: 1px solid #F60;
+	box-sizing: border-box;
+	background-color: palegoldenrod;
+	//width: 1170px;
+	//width: 1190px;
+	position: absolute;
+	top: 0;
+	z-index:1000;
+	width: 100%;
+	max-height: 64px;
+		height: 100%;
+}
+.container header h2 {
+	text-align: center;
+	line-height: 3.2em;
+}
+ul li span {
+	display:block;
+}
+ul li {
+	float: left;
+}
+/*.main {
+	position: absolute;
+	top: 62px;
+	bottom: 82px;
+	//overflow-y: scroll;
+	//overflow-x: hidden;
+	//width: 1190px;
+	width: 100%;
+	overflow: auto;
+}*/
+#main { /* wrapper scroll*/
+	position:absolute; 
+	z-index:1000;
+	top:62px; 
+	bottom:82px; 
+	width:100%;
+	background:#eee;
+	overflow:auto;
+}
+.main .item {
+	width: 100%;
+	border-bottom: 1px dashed #E3E3E3;
+}
+.main .item:first-child {
+	border-top: 1px solid #d3d3d3;
+}
+.main .item:last-child {
+	border: 0 none;
+}
+.main .item .btn-sp {
+/*	margin: 20px;*/
+	margin: 1.68067%;
+	width: 96.63865%;
+	float: left;
+	position: relative;
+}
+.main .item section {
+	width: 84.34782%;
+    float: left;
+}
+.main .item .btn-sp .item-icon {
+	float: left;
+	/*width: 160px;
+	height: 160px;
+	margin-right: 20px;*/
+	width: 13.91304%;
+	/*height: 13.91304%;*/
+	background-size: cover;
+	margin-right: 1.68067%;
+	border: 1px solid #e0e0e0;
+}
+.main .item .btn-sp .item-name {
+	float: left;
+	width: 100%;
+	/*margin-bottom: 20px;*/
+	margin-bottom: 1.68067%;
+	line-height: 1.8;
+}
+.main .item .btn-sp .item-price,
+.main .item .btn-sp .item-price-old {
+	color: #B50303;
+	float: left;
+	width: 20%;
+}
+.main .item .btn-sp .item-price-old {
+	text-decoration: line-through;
+	color: #aaa;
+}
+.main .item .btn-cart {
+	
+	float: right;
+	width: 20%;
+	border: 1px solid #f40;
+	border-radius: 2px;
+	background: #F37503;
+	color: #fff;
+	text-shadow: -1px -1px 0 #AE2E00;
+	padding: 10px;
+	box-sizing: border-box;
+	line-height: 1.2;
+	text-align: center;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+}
+.fix {
+	position: absolute;
+	bottom: 0px;
+	//width: 1190px;
+	padding:0px 0px 10px 0px;
+	border-top: 1px solid red;
+	z-index: 1000;
+    background-color: pink;
+	width: 100%;
+}
+ul li.nav-list {
+	width: 25%;
+	text-align: center;
+}
+ul li.nav-list .btn-sp span {
+	margin-top: 10px;
+}
+
+
+/******svg navbtn*******/
+.nav-list {
+	font-size: 1.6rem;
+	line-height: 1;
+}
+.nav-list a {
+	color: green;
+}
+svg.nav_icon_svg { 
+  fill: currentColor; /**可填充当前与文本一致的颜色***/
+}
+
+
+.nav_icon_svg {
+	width: 26.84563%; /* 80px/298px */
+	height: 80px;
+}
+.nav_icon_home,
+.nav_icon_similar,
+.nav_icon_cart,
+.nav_icon_me {
+	background: url(../img/iconfont01.png) no-repeat scroll transparent;
+	background-position: 0px 0;
+	background-size: 100% 100%;
+	width: 160px;
+	height: 160px;
+}
+.nav_icon_similar {
+	background-position: -160px 0px;
+}
+.nav_icon_cart {
+	background-position: -320px 0px;
+}
+.nav_icon_me {
+	background-position: -480px 0px;
+}
+
+
+
+
+/* 手机: 小于等于480的设备。样式继承自上。 */
+@media only all and (max-width: 480px) {
+.wrapper {
+	width: 100%;
+	margin: 0 auto;
+	background-color: blue;
+	height: 100%;
+}
+.container {
+	width: 100%;
+	background-color: #FCC;
+	height: 100%;
+}
+}
+
+/* 手机+平板+小屏幕电脑布局: 481px 至 1024px。样式继承自上。 */
+@media only all and (min-width: 480px) and (max-width: 1024px) {
+	
+}
+/* 桌面电脑布局: 1024px 至最高展示 1190px。样式继承自上。 */
+@media only all and (min-width: 1024px) {
+.wrapper {
+	width: 100%;
+	margin: 0 auto;
+	max-width: 1190px;
+	background-color: green;
+	height: 100%;
+}
+.container {
+	width: 100%;
+	background-color: #eee;
+	height: 100%;
+}
+.container header,
+.main,
+.fix {
+	max-width: 1190px;
+}
+.main .item section {
+	max-width: 970px;
+}
+#main { /* wrapper scroll*/
+	max-width: 1190px;
+}
+.main .item .btn-sp .item-icon {
+	max-width: 160px;
+	max-height: 160px;
+}
+/*.main .item {
+	width: 50%;
+}*/
+}
